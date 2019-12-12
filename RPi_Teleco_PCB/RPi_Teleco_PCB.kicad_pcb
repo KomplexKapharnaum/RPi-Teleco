@@ -380,7 +380,7 @@
     (fp_text reference Switch1 (at 3.175 -6.6548) (layer F.SilkS)
       (effects (font (size 0.6096 0.6096) (thickness 0.127)))
     )
-    (fp_text value MOMENTARY-SWITCH-SPST-LED-PTH-12MM (at 3.175 6.731) (layer F.SilkS)
+    (fp_text value MOMENTARY-SWITCH-SPST-LED-PTH-12MM (at 3.175 6.731) (layer F.SilkS) hide
       (effects (font (size 0.6096 0.6096) (thickness 0.127)))
     )
     (fp_line (start 4.99872 1.29794) (end 4.99872 0.6985) (layer Dwgs.User) (width 0.2032))
@@ -459,7 +459,7 @@
     (fp_text reference Switch2 (at 3.175 -6.6548) (layer F.SilkS)
       (effects (font (size 0.6096 0.6096) (thickness 0.127)))
     )
-    (fp_text value MOMENTARY-SWITCH-SPST-LED-PTH-12MM (at 3.175 6.731) (layer F.SilkS)
+    (fp_text value MOMENTARY-SWITCH-SPST-LED-PTH-12MM (at 3.175 6.731) (layer F.SilkS) hide
       (effects (font (size 0.6096 0.6096) (thickness 0.127)))
     )
     (fp_text user - (at 0.1143 2.3876 180) (layer F.SilkS)
@@ -538,7 +538,7 @@
     (fp_text reference Switch3 (at 3.175 -6.6548) (layer F.SilkS)
       (effects (font (size 0.6096 0.6096) (thickness 0.127)))
     )
-    (fp_text value MOMENTARY-SWITCH-SPST-LED-PTH-12MM (at 3.175 6.731) (layer F.SilkS)
+    (fp_text value MOMENTARY-SWITCH-SPST-LED-PTH-12MM (at 3.175 6.731) (layer F.SilkS) hide
       (effects (font (size 0.6096 0.6096) (thickness 0.127)))
     )
     (fp_line (start 4.99872 1.29794) (end 4.99872 0.6985) (layer Dwgs.User) (width 0.2032))
@@ -617,7 +617,7 @@
     (fp_text reference Switch4 (at 3.175 -6.6548) (layer F.SilkS)
       (effects (font (size 0.6096 0.6096) (thickness 0.127)))
     )
-    (fp_text value MOMENTARY-SWITCH-SPST-LED-PTH-12MM (at 3.175 6.731) (layer F.SilkS)
+    (fp_text value MOMENTARY-SWITCH-SPST-LED-PTH-12MM (at 3.175 6.731) (layer F.SilkS) hide
       (effects (font (size 0.6096 0.6096) (thickness 0.127)))
     )
     (fp_text user - (at 0.1143 2.3876 180) (layer F.SilkS)
@@ -696,7 +696,7 @@
     (fp_text reference Switch5 (at 3.175 -6.6548) (layer F.SilkS)
       (effects (font (size 0.6096 0.6096) (thickness 0.127)))
     )
-    (fp_text value MOMENTARY-SWITCH-SPST-LED-PTH-12MM (at 3.175 6.731) (layer F.SilkS)
+    (fp_text value MOMENTARY-SWITCH-SPST-LED-PTH-12MM (at 3.175 6.731) (layer F.SilkS) hide
       (effects (font (size 0.6096 0.6096) (thickness 0.127)))
     )
     (fp_line (start 4.99872 1.29794) (end 4.99872 0.6985) (layer Dwgs.User) (width 0.2032))
@@ -775,7 +775,7 @@
     (fp_text reference Switch6 (at 3.175 -6.6548) (layer F.SilkS)
       (effects (font (size 0.6096 0.6096) (thickness 0.127)))
     )
-    (fp_text value MOMENTARY-SWITCH-SPST-LED-PTH-12MM (at 3.175 6.731) (layer F.SilkS)
+    (fp_text value MOMENTARY-SWITCH-SPST-LED-PTH-12MM (at 3.175 6.731) (layer F.SilkS) hide
       (effects (font (size 0.6096 0.6096) (thickness 0.127)))
     )
     (fp_text user - (at 0.1143 2.3876 180) (layer F.SilkS)
@@ -854,7 +854,7 @@
     (fp_text reference Switch7 (at 3.175 -6.6548) (layer F.SilkS)
       (effects (font (size 0.6096 0.6096) (thickness 0.127)))
     )
-    (fp_text value MOMENTARY-SWITCH-SPST-LED-PTH-12MM (at 3.175 6.731) (layer F.SilkS)
+    (fp_text value MOMENTARY-SWITCH-SPST-LED-PTH-12MM (at 3.175 6.731) (layer F.SilkS) hide
       (effects (font (size 0.6096 0.6096) (thickness 0.127)))
     )
     (fp_line (start 4.99872 1.29794) (end 4.99872 0.6985) (layer Dwgs.User) (width 0.2032))
@@ -933,7 +933,7 @@
     (fp_text reference Switch8 (at 3.175 -6.6548) (layer F.SilkS)
       (effects (font (size 0.6096 0.6096) (thickness 0.127)))
     )
-    (fp_text value MOMENTARY-SWITCH-SPST-LED-PTH-12MM (at 3.175 6.731) (layer F.SilkS)
+    (fp_text value MOMENTARY-SWITCH-SPST-LED-PTH-12MM (at 3.175 6.731) (layer F.SilkS) hide
       (effects (font (size 0.6096 0.6096) (thickness 0.127)))
     )
     (fp_text user - (at 0.1143 2.3876 180) (layer F.SilkS)
@@ -1004,7 +1004,7 @@
   )
 
   (module Package_DIP:DIP-28_W7.62mm (layer F.Cu) (tedit 5A02E8C5) (tstamp 5DF17BDE)
-    (at 92.71 78.74 90)
+    (at 91.44 78.74 90)
     (descr "28-lead though-hole mounted DIP package, row spacing 7.62 mm (300 mils)")
     (tags "THT DIP DIL PDIP 2.54mm 7.62mm 300mil")
     (path /5DF11759)

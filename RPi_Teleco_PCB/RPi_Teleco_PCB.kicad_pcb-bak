@@ -203,7 +203,7 @@
   )
 
   (module Connector_PinSocket_2.54mm:PinSocket_1x04_P2.54mm_Vertical (layer F.Cu) (tedit 5A19A429) (tstamp 5DF179E1)
-    (at 102.87 90.17)
+    (at 92.71 55.88)
     (descr "Through hole straight socket strip, 1x04, 2.54mm pitch, single row (from Kicad 4.0.7), script generated")
     (tags "Through hole socket strip THT 1x04 2.54mm single row")
     (path /5DF0D60F)
@@ -328,7 +328,7 @@
   )
 
   (module Connector_PinSocket_2.54mm:PinSocket_1x04_P2.54mm_Vertical (layer F.Cu) (tedit 5A19A429) (tstamp 5DF17A26)
-    (at 116.84 118.11)
+    (at 99.06 55.88)
     (descr "Through hole straight socket strip, 1x04, 2.54mm pitch, single row (from Kicad 4.0.7), script generated")
     (tags "Through hole socket strip THT 1x04 2.54mm single row")
     (path /5DF17D85)
@@ -371,8 +371,8 @@
     )
   )
 
-  (module TACTILE_SWITCH_LED_PTH_12MM (layer F.Cu) (tedit 200000) (tstamp 5DF17A57)
-    (at 146.4479 58.38698)
+  (module TACTILE_SWITCH_LED_PTH_12MM (layer F.Cu) (tedit 200000) (tstamp 5DF204C7)
+    (at 115.57 41.91)
     (descr "MOMENTARY SWITCH (PUSHBUTTON) - SPST - W/ LED - PTH")
     (tags "MOMENTARY SWITCH (PUSHBUTTON) - SPST - W/ LED - PTH")
     (path /5DF14145)
@@ -450,8 +450,8 @@
       (solder_mask_margin 0.1016))
   )
 
-  (module TACTILE_SWITCH_LED_PTH_12MM (layer F.Cu) (tedit 200000) (tstamp 5DF17A88)
-    (at 162.0979 58.38698)
+  (module TACTILE_SWITCH_LED_PTH_12MM (layer F.Cu) (tedit 200000) (tstamp 5DF2061C)
+    (at 131.6179 41.87698)
     (descr "MOMENTARY SWITCH (PUSHBUTTON) - SPST - W/ LED - PTH")
     (tags "MOMENTARY SWITCH (PUSHBUTTON) - SPST - W/ LED - PTH")
     (path /5DF1B4D4)
@@ -529,8 +529,8 @@
       (solder_mask_margin 0.1016))
   )
 
-  (module TACTILE_SWITCH_LED_PTH_12MM (layer F.Cu) (tedit 200000) (tstamp 5DF17AB9)
-    (at 146.4479 74.55698)
+  (module TACTILE_SWITCH_LED_PTH_12MM (layer F.Cu) (tedit 200000) (tstamp 5DF2073C)
+    (at 147.7179 41.91)
     (descr "MOMENTARY SWITCH (PUSHBUTTON) - SPST - W/ LED - PTH")
     (tags "MOMENTARY SWITCH (PUSHBUTTON) - SPST - W/ LED - PTH")
     (path /5DF1BC9E)
@@ -608,8 +608,8 @@
       (solder_mask_margin 0.1016))
   )
 
-  (module TACTILE_SWITCH_LED_PTH_12MM (layer F.Cu) (tedit 200000) (tstamp 5DF17AEA)
-    (at 162.0979 74.55698)
+  (module TACTILE_SWITCH_LED_PTH_12MM (layer F.Cu) (tedit 200000) (tstamp 5DF2097F)
+    (at 163.83 41.91)
     (descr "MOMENTARY SWITCH (PUSHBUTTON) - SPST - W/ LED - PTH")
     (tags "MOMENTARY SWITCH (PUSHBUTTON) - SPST - W/ LED - PTH")
     (path /5DF1C648)
@@ -688,7 +688,7 @@
   )
 
   (module TACTILE_SWITCH_LED_PTH_12MM (layer F.Cu) (tedit 200000) (tstamp 5DF17B1B)
-    (at 177.7479 58.38698)
+    (at 180.2879 41.87698)
     (descr "MOMENTARY SWITCH (PUSHBUTTON) - SPST - W/ LED - PTH")
     (tags "MOMENTARY SWITCH (PUSHBUTTON) - SPST - W/ LED - PTH")
     (path /5DF1CC32)
@@ -767,7 +767,7 @@
   )
 
   (module TACTILE_SWITCH_LED_PTH_12MM (layer F.Cu) (tedit 200000) (tstamp 5DF17B4C)
-    (at 193.3979 58.38698)
+    (at 195.9379 41.87698)
     (descr "MOMENTARY SWITCH (PUSHBUTTON) - SPST - W/ LED - PTH")
     (tags "MOMENTARY SWITCH (PUSHBUTTON) - SPST - W/ LED - PTH")
     (path /5DF1D528)
@@ -846,7 +846,7 @@
   )
 
   (module TACTILE_SWITCH_LED_PTH_12MM (layer F.Cu) (tedit 200000) (tstamp 5DF17B7D)
-    (at 177.7479 74.55698)
+    (at 212.0379 41.87798)
     (descr "MOMENTARY SWITCH (PUSHBUTTON) - SPST - W/ LED - PTH")
     (tags "MOMENTARY SWITCH (PUSHBUTTON) - SPST - W/ LED - PTH")
     (path /5DF1DE1E)
@@ -925,7 +925,7 @@
   )
 
   (module TACTILE_SWITCH_LED_PTH_12MM (layer F.Cu) (tedit 200000) (tstamp 5DF17BAE)
-    (at 193.3979 74.55698)
+    (at 227.6879 41.87798)
     (descr "MOMENTARY SWITCH (PUSHBUTTON) - SPST - W/ LED - PTH")
     (tags "MOMENTARY SWITCH (PUSHBUTTON) - SPST - W/ LED - PTH")
     (path /5DF1EAD4)
@@ -1004,7 +1004,7 @@
   )
 
   (module Package_DIP:DIP-28_W7.62mm (layer F.Cu) (tedit 5A02E8C5) (tstamp 5DF17BDE)
-    (at 149.86 119.38 90)
+    (at 92.71 78.74 90)
     (descr "28-lead though-hole mounted DIP package, row spacing 7.62 mm (300 mils)")
     (tags "THT DIP DIL PDIP 2.54mm 7.62mm 300mil")
     (path /5DF11759)
