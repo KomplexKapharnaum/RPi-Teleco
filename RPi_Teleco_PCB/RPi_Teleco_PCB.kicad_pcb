@@ -2,7 +2,7 @@
 
   (general
     (thickness 1.6)
-    (drawings 20)
+    (drawings 24)
     (tracks 210)
     (zones 0)
     (modules 18)
@@ -1149,6 +1149,10 @@
     )
   )
 
+  (gr_line (start 150.78 98.5) (end 150.78 67.5) (layer F.SilkS) (width 0.12) (tstamp 5E3853F9))
+  (gr_line (start 209.78 98.5) (end 150.78 98.5) (layer F.SilkS) (width 0.12))
+  (gr_line (start 209.78 67.5) (end 209.78 98.5) (layer F.SilkS) (width 0.12))
+  (gr_line (start 150.78 67.5) (end 209.78 67.5) (layer F.SilkS) (width 0.12))
   (dimension 114.3 (width 0.15) (layer Dwgs.User)
     (gr_text "114,300 mm" (at 177.8 38.07) (layer Dwgs.User)
       (effects (font (size 1 1) (thickness 0.15)))
