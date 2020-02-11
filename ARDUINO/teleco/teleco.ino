@@ -28,7 +28,6 @@
 
 */
 
-
 Adafruit_MCP23017 mcp;
 U8G2_SSD1309_128X64_NONAME0_F_4W_SW_SPI u8g2(U8G2_R0, /* clock=*/ 15, /* data=*/ 16, /* cs=*/ 10, /* dc=*/ 9, /* reset=*/ 8);
 
