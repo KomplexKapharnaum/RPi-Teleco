@@ -5,6 +5,30 @@
 #include <Wire.h>
 #include "Adafruit_MCP23017.h"
 
+/*
+  PRO MICRO -- PRECAUTIONS
+
+  • Installer les boards SparkFun :
+  - add URL de gestionnaire de cartes supplémentaires "https://raw.githubusercontent.com/sparkfun/Arduino_Boards/master/IDE_Board_Manager/package_sparkfun_index.json"
+  - Tools/Type de Carte/Gestionnaire de Carte/ Installer "SparkFun AVR Boards"
+
+  • Arduino IDE Burning Options
+  - Type de carte "sparkfun Pro Micro"
+  - Processeur "ATMega 32U4 (5V,16Mhz)"
+  - Port : "..."
+
+  • Si le pro micro a été gravé avec la mauvaise config, il est possible qu'il soit pété et pas re-gravable.
+    FIX: Re-graver le bootloader depuis un arduino Uno. https://eldontronics.wordpress.com/2019/06/16/arduino-pro-micro-clone-port-not-detected/
+  - Connecter Arduino Uno (Pins 5V, GND, 13, 12, 11, 10) <--> Pro Micro (Pins 5V, GND, 15, 14, 16, RST)
+  - Graver le sketch exemple ArduinoISP sur le Arduino Uno
+  - Se mettre dans la config
+    type de carte "sparkfun Pro Micro" / Processeur "ATMega 32U4 (5V,16Mhz)" / Port : "celui de l'arduino UNO" / Programmateur: "Arduino as ISP"
+    et "Graver la séquence d'initialisation"
+  - Ré-essayer de graver directement le Pro Micro en conditions normales.
+
+*/
+
+
 Adafruit_MCP23017 mcp;
 U8G2_SSD1309_128X64_NONAME0_F_4W_SW_SPI u8g2(U8G2_R0, /* clock=*/ 15, /* data=*/ 16, /* cs=*/ 10, /* dc=*/ 9, /* reset=*/ 8);
 
