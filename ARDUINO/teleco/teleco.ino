@@ -52,6 +52,7 @@ void setup() {
 
   // SCREEN
   u8g2.begin();
+  u8g2.enableUTF8Print();
 
   // MCP
   mcp.begin(); // default address 0
@@ -121,7 +122,7 @@ void loop() {
 
   // SCREEN START
   // u8g2.clearBuffer();
-  u8g2.setFont(u8g2_font_6x12_mr);
+  u8g2.setFont(u8g2_font_6x12_me);
   readAndDisplay();
 
   // TYPO TEST
@@ -129,9 +130,7 @@ void loop() {
   // u8g2.drawStr(0,22,"I'm the raspi-remote");
   // u8g2.drawStr(0,34,"Yes p");
   // u8g2.drawStr(0,46,"Whats up");
-  // u8g2.drawStr(0,58,"I don't know p");
-
-  // u8g2.drawStr(0,8,"btn pressed:");
+  // u8g2.drawStr(0,58,"I don't know •••• ••••");
 
   // UTILS
   u8g2.sendBuffer();
@@ -147,7 +146,7 @@ void loop() {
   }
 
   void longPress(int i){
-    String rpi_com = switches_functions[i]+" (long press)                   ";
+    String rpi_com = switches_functions[i]+" (long press)                     ";
     Serial.println(rpi_com);
     u8g2.drawStr(0,58,rpi_com.c_str());
   }
@@ -162,7 +161,7 @@ void loop() {
       // Get args
       int input_arg1 = atoi(&input[0]);
       int input_arg2 = atoi(&input[2]);
-      // Line 1--5
+      // STANDARD TEXT ( Line 1--5 )
       if((input_arg1>=1)&&(input_arg1<=5)){
         // txt style
         if(input_arg2==1){u8g2.setDrawColor(0);}else u8g2.setDrawColor(1);
@@ -171,6 +170,10 @@ void loop() {
         int posY = input_arg1*10+(input_arg1-1)*2;
         u8g2.drawStr(0,posY,input.c_str());
         u8g2.sendBuffer();
+      }
+      // SPECIAL ARGS
+      if(input_arg1==0){
+        u8g2.clearBuffer();
       }
     }
   }
