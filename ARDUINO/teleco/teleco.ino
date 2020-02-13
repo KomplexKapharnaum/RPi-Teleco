@@ -37,7 +37,7 @@ int longPressDelay = 500;
 // PINOUT
 int switches[8]= {8,10,12,14,0,2,4,6};
 int leds[8]= {9,11,13,15,1,3,5,7};
-String switches_functions[8]= {"pause","play","prev","next","mute","func","up","down"};
+String switches_functions[8]= {"play","pause","prev","next","mute","func","up","down"};
 
 // UTILS
 int switches_states[8]= {0,0,0,0,0,0,0,0};
@@ -48,6 +48,7 @@ unsigned long Tnow = 0;
 void setup() {
 
   Serial.begin(115200);
+  Serial.setTimeout(10);
 
   // SCREEN
   u8g2.begin();
@@ -95,10 +96,6 @@ void loop() {
   mcp.digitalWrite(13, mcp.digitalRead(12));
   mcp.digitalWrite(15, mcp.digitalRead(14));
 
-  // SCREEN START
-  u8g2.clearBuffer();
-  u8g2.setFont(u8g2_font_6x12_mr);
-  u8g2.drawStr(0,8,"btn pressed:");
 
   // GET BTNS
   for (int i = 0; i < 8; i++) {
@@ -121,12 +118,20 @@ void loop() {
     }
   }
 
+
+  // SCREEN START
+  // u8g2.clearBuffer();
+  u8g2.setFont(u8g2_font_6x12_mr);
+  readAndDisplay();
+
   // TYPO TEST
-  // u8g2.drawStr(0,8,"Hello KXKM World!");
-  // u8g2.drawStr(0,20,"I'm the raspi-remote");
-  // u8g2.drawStr(0,32,"yes");
-  // u8g2.drawStr(0,44,"whats up");
-  // u8g2.drawStr(0,56,"I don't know");
+  // u8g2.drawStr(0,10,"Hello KXKM World! p");
+  // u8g2.drawStr(0,22,"I'm the raspi-remote");
+  // u8g2.drawStr(0,34,"Yes p");
+  // u8g2.drawStr(0,46,"Whats up");
+  // u8g2.drawStr(0,58,"I don't know p");
+
+  // u8g2.drawStr(0,8,"btn pressed:");
 
   // UTILS
   u8g2.sendBuffer();
@@ -136,19 +141,36 @@ void loop() {
   }
 
   void simplePress(int i){
-    // String rpi_com = "/simple_press "+String(i);
-    String rpi_com = switches_functions[i]+" simple_press ";
+    String rpi_com = switches_functions[i]+" (simple press)                   ";
     Serial.println(rpi_com);
-    char cstr[16];
-    itoa(i, cstr, 10);
-    u8g2.drawStr(0,20,cstr);
+    u8g2.drawStr(0,58,rpi_com.c_str());
   }
 
   void longPress(int i){
-    // String rpi_com = "/long_press "+String(i);
-    String rpi_com = switches_functions[i]+" long_press ";
+    String rpi_com = switches_functions[i]+" (long press)                   ";
     Serial.println(rpi_com);
-    char cstr[16];
-    itoa(i, cstr, 10);
-    u8g2.drawStr(0,20,cstr);
+    u8g2.drawStr(0,58,rpi_com.c_str());
+  }
+
+  void readAndDisplay(){
+    String input = Serial.readString();
+    if(input.length()!=0){
+      // Add white space at end of txt
+      input = input.substring(0, input.length() - 1);
+      String long_end = "                       ";
+      input+=long_end;
+      // Get args
+      int input_arg1 = atoi(&input[0]);
+      int input_arg2 = atoi(&input[2]);
+      // Line 1--5
+      if((input_arg1>=1)&&(input_arg1<=5)){
+        // txt style
+        if(input_arg2==1){u8g2.setDrawColor(0);}else u8g2.setDrawColor(1);
+        // remove args
+        input.remove(0,4);
+        int posY = input_arg1*10+(input_arg1-1)*2;
+        u8g2.drawStr(0,posY,input.c_str());
+        u8g2.sendBuffer();
+      }
+    }
   }
