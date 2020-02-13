@@ -145,19 +145,19 @@ void loop() {
   void simplePress(int i){
     String rpi_com = switches_functions[i]+"-down";
     Serial.println(rpi_com);
-    u8g2.drawStr(0,58,(rpi_com+"                   ").c_str());
+    //u8g2.drawStr(0,58,(rpi_com+"                   ").c_str());
   }
 
   void longPress(int i){
     String rpi_com = switches_functions[i]+"-hold";
     Serial.println(rpi_com);
-    u8g2.drawStr(0,58,(rpi_com+"                     ").c_str());
+    //u8g2.drawStr(0,58,(rpi_com+"                     ").c_str());
   }
 
   void releasePress(int i){
     String rpi_com = switches_functions[i]+"-up";
     Serial.println(rpi_com);
-    u8g2.drawStr(0,58,(rpi_com+"                     ").c_str());
+    //u8g2.drawStr(0,58,(rpi_com+"                     ").c_str());
   }
 
   void readAndDisplay(){
