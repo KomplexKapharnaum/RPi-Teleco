@@ -34,10 +34,11 @@ U8G2_SSD1309_128X64_NONAME0_F_4W_SW_SPI u8g2(U8G2_R0, /* clock=*/ 15, /* data=*/
 // CONFIG
 int Brightness = 20;
 int longPressDelay = 500;
+int holdRepeatDelay = 100;
 // PINOUT
 int switches[8]= {8,10,12,14,0,2,4,6};
 int leds[8]= {9,11,13,15,1,3,5,7};
-String switches_functions[8]= {"play","pause","prev","next","mute","func","up","down"};
+String switches_functions[8]= {"A","B","C","D","X","Y","UP","DOWN"}; // {"play","pause","prev","next","mute","func","up","down"};
 
 // UTILS
 int switches_states[8]= {0,0,0,0,0,0,0,0};
@@ -110,12 +111,14 @@ void loop() {
       }
       // long
       if((switches_states[i]==1)&&(Tnow-switches_times[i]>longPressDelay)){
+        switches_times[i]=Tnow-longPressDelay+holdRepeatDelay;
         longPress(i);
       }
     }
     // OFF
     if(mcp.digitalRead(switches[i])&&(switches_states[i]!=0)){
       switches_states[i]=0;
+      releasePress(i);
     }
   }
 
@@ -140,15 +143,21 @@ void loop() {
   }
 
   void simplePress(int i){
-    String rpi_com = switches_functions[i]+" (simple press)                   ";
+    String rpi_com = switches_functions[i]+"-down";
     Serial.println(rpi_com);
-    u8g2.drawStr(0,58,rpi_com.c_str());
+    u8g2.drawStr(0,58,(rpi_com+"                   ").c_str());
   }
 
   void longPress(int i){
-    String rpi_com = switches_functions[i]+" (long press)                     ";
+    String rpi_com = switches_functions[i]+"-hold";
     Serial.println(rpi_com);
-    u8g2.drawStr(0,58,rpi_com.c_str());
+    u8g2.drawStr(0,58,(rpi_com+"                     ").c_str());
+  }
+
+  void releasePress(int i){
+    String rpi_com = switches_functions[i]+"-up";
+    Serial.println(rpi_com);
+    u8g2.drawStr(0,58,(rpi_com+"                     ").c_str());
   }
 
   void readAndDisplay(){
