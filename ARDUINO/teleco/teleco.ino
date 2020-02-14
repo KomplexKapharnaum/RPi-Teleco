@@ -33,17 +33,23 @@ U8G2_SSD1309_128X64_NONAME0_F_4W_SW_SPI u8g2(U8G2_R0, /* clock=*/ 15, /* data=*/
 
 // CONFIG
 int Brightness = 20;
-int longPressDelay = 500;
+int longPressDelay = 300;
 int holdRepeatDelay = 100;
+
 // PINOUT
-int switches[8]= {8,10,12,14,0,2,4,6};
-int leds[8]= {9,11,13,15,1,3,5,7};
-String switches_functions[8]= {"A","B","C","D","X","Y","UP","DOWN"}; // {"play","pause","prev","next","mute","func","up","down"};
+int switches[8] = {8, 10, 12, 14, 0, 2, 4, 6};
+int leds[8] = {9, 11, 13, 15, 1, 3, 5, 7};
+String switches_functions[8] = {"A", "B", "C", "D", "MUTE", "FUNC", "UP", "DOWN"}; // {"play","pause","prev","next","mute","func","up","down"};
 
 // UTILS
-int switches_states[8]= {0,0,0,0,0,0,0,0};
-unsigned long switches_times[8]= {0,0,0,0,0,0,0,0};
+int switches_states[8] = {0, 0, 0, 0, 0, 0, 0, 0};
+unsigned long switches_times[8] = {0, 0, 0, 0, 0, 0, 0, 0};
 unsigned long Tnow = 0;
+
+// RECV
+const byte numChars = 32;
+char receivedChars[numChars];
+boolean newData = false;
 
 
 void setup() {
@@ -54,6 +60,8 @@ void setup() {
   // SCREEN
   u8g2.begin();
   u8g2.enableUTF8Print();
+  u8g2.setFont(u8g2_font_6x12_me);
+  u8g2.clearBuffer();
 
   // MCP
   mcp.begin(); // default address 0
@@ -82,7 +90,7 @@ void setup() {
   pinMode(6, OUTPUT);
   analogWrite(6, Brightness);
 
-  }
+}
 
 void loop() {
 
@@ -102,22 +110,22 @@ void loop() {
   // GET BTNS
   for (int i = 0; i < 8; i++) {
     // ON
-    if(!mcp.digitalRead(switches[i])){
+    if (!mcp.digitalRead(switches[i])) {
       // simple
-      if(switches_states[i]==0){
-        switches_states[i]=1;
-        switches_times[i]=Tnow;
+      if (switches_states[i] == 0) {
+        switches_states[i] = 1;
+        switches_times[i] = Tnow;
         simplePress(i);
       }
       // long
-      if((switches_states[i]==1)&&(Tnow-switches_times[i]>longPressDelay)){
-        switches_times[i]=Tnow-longPressDelay+holdRepeatDelay;
+      if ((switches_states[i] == 1) && (Tnow - switches_times[i] > longPressDelay)) {
+        switches_times[i] = Tnow - longPressDelay + holdRepeatDelay;
         longPress(i);
       }
     }
     // OFF
-    if(mcp.digitalRead(switches[i])&&(switches_states[i]!=0)){
-      switches_states[i]=0;
+    if (mcp.digitalRead(switches[i]) && (switches_states[i] != 0)) {
+      switches_states[i] = 0;
       releasePress(i);
     }
   }
@@ -125,9 +133,8 @@ void loop() {
 
   // SCREEN START
   // u8g2.clearBuffer();
-  u8g2.setFont(u8g2_font_6x12_me);
-  readAndDisplay();
-
+  recvWithStartEndMarkers();
+  
   // TYPO TEST
   // u8g2.drawStr(0,10,"Hello KXKM World! p");
   // u8g2.drawStr(0,22,"I'm the raspi-remote");
@@ -135,54 +142,88 @@ void loop() {
   // u8g2.drawStr(0,46,"Whats up");
   // u8g2.drawStr(0,58,"I don't know •••• ••••");
 
-  // UTILS
-  u8g2.sendBuffer();
-  delay(1);
 
+}
 
+void simplePress(int i) {
+  String rpi_com = switches_functions[i] + "-down";
+  Serial.println(rpi_com);
+  //u8g2.drawStr(0,58,(rpi_com+"                   ").c_str());
+}
+
+void longPress(int i) {
+  String rpi_com = switches_functions[i] + "-hold";
+  Serial.println(rpi_com);
+  //u8g2.drawStr(0,58,(rpi_com+"                     ").c_str());
+}
+
+void releasePress(int i) {
+  String rpi_com = switches_functions[i] + "-up";
+  Serial.println(rpi_com);
+  //u8g2.drawStr(0,58,(rpi_com+"                     ").c_str());
+}
+
+void doDisplay() {
+  String input = String(receivedChars);
+  if (input.length() != 0) {
+    // Get args
+    int input_arg1 = atoi(&input[0]);
+    
+    // SPECIAL ARGS
+    if (input_arg1 == 0) {
+      u8g2.clearBuffer();
+    }
+    
+    // STANDARD TEXT ( Line 1--5 )
+    else if ((input_arg1 >= 1) && (input_arg1 <= 5)) {
+       int input_arg2 = atoi(&input[2]);
+      // txt style
+      if (input_arg2 == 1) {
+        u8g2.setDrawColor(0);
+      } else u8g2.setDrawColor(1);
+      // remove args
+      input.remove(0, 4);
+      int posY = input_arg1 * 10 + (input_arg1 - 1) * 2;
+      u8g2.drawStr(0, posY, input.c_str());
+    }
+    
   }
+}
 
-  void simplePress(int i){
-    String rpi_com = switches_functions[i]+"-down";
-    Serial.println(rpi_com);
-    //u8g2.drawStr(0,58,(rpi_com+"                   ").c_str());
-  }
+void recvWithStartEndMarkers() {
+  static boolean recvInProgress = false;
+  static byte ndx = 0;
+  char fluxMarker = '¤';
+  char splitMarker = '£';
+  char rc;
+  bool dirty = false;
 
-  void longPress(int i){
-    String rpi_com = switches_functions[i]+"-hold";
-    Serial.println(rpi_com);
-    //u8g2.drawStr(0,58,(rpi_com+"                     ").c_str());
-  }
+  while (Serial.available() > 0 && newData == false) {
+    rc = Serial.read();
 
-  void releasePress(int i){
-    String rpi_com = switches_functions[i]+"-up";
-    Serial.println(rpi_com);
-    //u8g2.drawStr(0,58,(rpi_com+"                     ").c_str());
-  }
+    
+    if (recvInProgress == true) {
+      
+      if (rc == fluxMarker || rc == splitMarker) {
+        receivedChars[ndx] = '\0'; // terminate the string
+        ndx = 0;
+        doDisplay();
+        dirty = true;
 
-  void readAndDisplay(){
-    String input = Serial.readString();
-    if(input.length()!=0){
-      // Add white space at end of txt
-      input = input.substring(0, input.length() - 1);
-      String long_end = "                       ";
-      input+=long_end;
-      // Get args
-      int input_arg1 = atoi(&input[0]);
-      int input_arg2 = atoi(&input[2]);
-      // STANDARD TEXT ( Line 1--5 )
-      if((input_arg1>=1)&&(input_arg1<=5)){
-        // txt style
-        if(input_arg2==1){u8g2.setDrawColor(0);}else u8g2.setDrawColor(1);
-        // remove args
-        input.remove(0,4);
-        int posY = input_arg1*10+(input_arg1-1)*2;
-        u8g2.drawStr(0,posY,input.c_str());
-        u8g2.sendBuffer();
+        if (rc == fluxMarker) recvInProgress = false;
       }
-      // SPECIAL ARGS
-      if(input_arg1==0){
-        u8g2.clearBuffer();
+      else {
+        receivedChars[ndx] = rc;
+        ndx++;
+        if (ndx >= numChars) ndx = numChars - 1;
       }
     }
+
+    else if (rc == fluxMarker) {
+      recvInProgress = true;
+      ndx = 0;
+    }
   }
+
+  if (dirty) u8g2.sendBuffer();
+}
