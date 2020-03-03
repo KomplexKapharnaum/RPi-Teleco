@@ -52,16 +52,69 @@ char receivedChars[numChars];
 boolean newData = false;
 
 
+void drawStringWithSymbol( int x, int y, String s) {
+
+  bool special = false;
+  bool unifont = false;
+  bool colored = false;
+
+  // clear line
+  u8g2.drawUTF8(x, y, "                      ");
+  
+  for (int k = 0; k < s.length(); k++) {
+
+    // engage special
+    if (s[k] == '^') special = true;
+    
+    // special engaged
+    else if (special) {
+      if (s[k] == '0') u8g2.setDrawColor(1);      // Black BG
+      else if (s[k] == '1') u8g2.setDrawColor(0); // White BG
+      else if (s[k] == '5') u8g2.setFont(u8g2_font_open_iconic_play_1x_t);
+      else if (s[k] == '6') u8g2.setFont(u8g2_font_open_iconic_arrow_1x_t);
+      else if (s[k] == '7') u8g2.setFont(u8g2_font_open_iconic_human_1x_t);
+      else if (s[k] == '8') u8g2.setFont(u8g2_font_open_iconic_mime_1x_t);
+      else if (s[k] == '9') u8g2.setFont(u8g2_font_open_iconic_www_1x_t);
+      
+      if (s[k] >= '5') unifont = true;
+      special = false;
+    }
+    
+    // draw next character
+    else {
+      x += u8g2.drawUTF8(x, y, String(s[k]).c_str() );
+      if (unifont) {
+        x += 5;
+        u8g2.setFont(u8g2_font_6x12_me);
+        unifont = false;
+      }
+    }
+    
+  }
+  
+  u8g2.setDrawColor(1);
+  
+}
+
 void setup() {
 
   Serial.begin(115200);
+  delay(2000);
   Serial.setTimeout(10);
 
   // SCREEN
   u8g2.begin();
   u8g2.enableUTF8Print();
-  u8g2.setFont(u8g2_font_6x12_me);
   u8g2.clearBuffer();
+  
+  u8g2.setFont(u8g2_font_6x12_me);
+  u8g2.setFontMode(0);
+  u8g2.setDrawColor(1);
+  //drawStringWithSymbol(0, 9, "^1  MEDIA 0123456789\"              ");
+  //drawStringWithSymbol(0, 35, "^1    ^0 starting.. ^7B^1     ");
+  drawStringWithSymbol(0, 35, "    ^0 starting.. ^7B     ");
+  //drawStringWithSymbol(0, 12*5+2, "^1      dp                ");
+  u8g2.sendBuffer();
 
   // MCP
   mcp.begin(); // default address 0
@@ -132,16 +185,7 @@ void loop() {
 
 
   // SCREEN START
-  // u8g2.clearBuffer();
   recvWithStartEndMarkers();
-  
-  // TYPO TEST
-  // u8g2.drawStr(0,10,"Hello KXKM World! p");
-  // u8g2.drawStr(0,22,"I'm the raspi-remote");
-  // u8g2.drawStr(0,34,"Yes p");
-  // u8g2.drawStr(0,46,"Whats up");
-  // u8g2.drawStr(0,58,"I don't know •••• ••••");
-
 
 }
 
@@ -163,32 +207,6 @@ void releasePress(int i) {
   //u8g2.drawStr(0,58,(rpi_com+"                     ").c_str());
 }
 
-void doDisplay() {
-  String input = String(receivedChars);
-  if (input.length() != 0) {
-    // Get args
-    int input_arg1 = atoi(&input[0]);
-    
-    // SPECIAL ARGS
-    if (input_arg1 == 0) {
-      u8g2.clearBuffer();
-    }
-    
-    // STANDARD TEXT ( Line 1--5 )
-    else if ((input_arg1 >= 1) && (input_arg1 <= 5)) {
-       int input_arg2 = atoi(&input[2]);
-      // txt style
-      if (input_arg2 == 1) {
-        u8g2.setDrawColor(0);
-      } else u8g2.setDrawColor(1);
-      // remove args
-      input.remove(0, 4);
-      int posY = input_arg1 * 10 + (input_arg1 - 1) * 2;
-      u8g2.drawStr(0, posY, input.c_str());
-    }
-    
-  }
-}
 
 void recvWithStartEndMarkers() {
   static boolean recvInProgress = false;
@@ -199,24 +217,45 @@ void recvWithStartEndMarkers() {
   bool dirty = false;
 
   while (Serial.available() > 0 && newData == false) {
+    
     rc = Serial.read();
-
     
     if (recvInProgress == true) {
-      
+
+      // End of Line
       if (rc == fluxMarker || rc == splitMarker) {
         receivedChars[ndx] = '\0'; // terminate the string
         ndx = 0;
-        doDisplay();
         dirty = true;
 
+        // Draw
+        String input = String(receivedChars);
+        if (input.length() != 0) {
+          // Get args
+          int input_arg1 = atoi(&input[0]);
+      
+          // SPECIAL ARGS
+          if (input_arg1 == 0) u8g2.clearBuffer();
+      
+          // STANDARD TEXT ( Line 1--5 )
+          else if ((input_arg1 >= 1) && (input_arg1 <= 5)) {
+            input.remove(0, 1);
+            int posY = 10 + 13*(input_arg1-1);
+            drawStringWithSymbol(0, posY, input);
+          }
+        }
+
+        // End of Transmission
         if (rc == fluxMarker) recvInProgress = false;
       }
+
+      // Receive in progress
       else {
         receivedChars[ndx] = rc;
         ndx++;
         if (ndx >= numChars) ndx = numChars - 1;
       }
+      
     }
 
     else if (rc == fluxMarker) {
@@ -225,5 +264,7 @@ void recvWithStartEndMarkers() {
     }
   }
 
+  // Push to screen
   if (dirty) u8g2.sendBuffer();
+  
 }
