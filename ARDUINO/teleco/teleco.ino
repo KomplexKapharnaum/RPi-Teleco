@@ -39,7 +39,7 @@ int holdRepeatDelay = 100;
 // PINOUT
 int switches[8] = {8, 10, 12, 14, 0, 2, 4, 6};
 int leds[8] = {9, 11, 13, 15, 1, 3, 5, 7};
-String switches_functions[8] = {"A", "B", "C", "D", "MUTE", "FUNC", "UP", "DOWN"}; // {"play","pause","prev","next","mute","func","up","down"};
+String s_fn[8] = {"A", "B", "C", "D", "MUTE", "FUNC", "UP", "DOWN"}; // {"play","pause","prev","next","mute","func","up","down"};
 
 // UTILS
 int switches_states[8] = {0, 0, 0, 0, 0, 0, 0, 0};
@@ -70,13 +70,16 @@ void drawStringWithSymbol( int x, int y, String s) {
     else if (special) {
       if (s[k] == '0') u8g2.setDrawColor(1);      // Black BG
       else if (s[k] == '1') u8g2.setDrawColor(0); // White BG
+      else if (s[k] == '2') u8g2.setFont(u8g2_font_open_iconic_embedded_1x_t);
+      else if (s[k] == '3') u8g2.setFont(u8g2_font_open_iconic_gui_1x_t);
+      else if (s[k] == '4') u8g2.setFont(u8g2_font_open_iconic_thing_1x_t);
       else if (s[k] == '5') u8g2.setFont(u8g2_font_open_iconic_play_1x_t);
       else if (s[k] == '6') u8g2.setFont(u8g2_font_open_iconic_arrow_1x_t);
       else if (s[k] == '7') u8g2.setFont(u8g2_font_open_iconic_human_1x_t);
       else if (s[k] == '8') u8g2.setFont(u8g2_font_open_iconic_mime_1x_t);
       else if (s[k] == '9') u8g2.setFont(u8g2_font_open_iconic_www_1x_t);
       
-      if (s[k] >= '5') unifont = true;
+      if (s[k] >= '2') unifont = true;
       special = false;
     }
     
@@ -162,24 +165,28 @@ void loop() {
 
   // GET BTNS
   for (int i = 0; i < 8; i++) {
+    
     // ON
     if (!mcp.digitalRead(switches[i])) {
       // simple
       if (switches_states[i] == 0) {
-        switches_states[i] = 1;
+        Serial.println(s_fn[i] + "-down");
         switches_times[i] = Tnow;
-        simplePress(i);
+        switches_states[i] = 1;
       }
       // long
-      if ((switches_states[i] == 1) && (Tnow - switches_times[i] > longPressDelay)) {
+      if ((switches_states[i] > 0) && (Tnow - switches_times[i] > longPressDelay)) {
+        Serial.println(s_fn[i] + "-hold");
         switches_times[i] = Tnow - longPressDelay + holdRepeatDelay;
-        longPress(i);
+        switches_states[i] = 2;
       }
     }
+    
     // OFF
-    if (mcp.digitalRead(switches[i]) && (switches_states[i] != 0)) {
+    if (mcp.digitalRead(switches[i]) && (switches_states[i] != 0))  {
+      if (switches_states[i] == 1) Serial.println(s_fn[i] + "-up");
+      else if (switches_states[i] == 2) Serial.println(s_fn[i] + "-holdup");
       switches_states[i] = 0;
-      releasePress(i);
     }
   }
 
@@ -187,24 +194,6 @@ void loop() {
   // SCREEN START
   recvWithStartEndMarkers();
 
-}
-
-void simplePress(int i) {
-  String rpi_com = switches_functions[i] + "-down";
-  Serial.println(rpi_com);
-  //u8g2.drawStr(0,58,(rpi_com+"                   ").c_str());
-}
-
-void longPress(int i) {
-  String rpi_com = switches_functions[i] + "-hold";
-  Serial.println(rpi_com);
-  //u8g2.drawStr(0,58,(rpi_com+"                     ").c_str());
-}
-
-void releasePress(int i) {
-  String rpi_com = switches_functions[i] + "-up";
-  Serial.println(rpi_com);
-  //u8g2.drawStr(0,58,(rpi_com+"                     ").c_str());
 }
 
 
