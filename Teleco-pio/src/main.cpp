@@ -51,6 +51,7 @@ const byte numChars = 32;
 char receivedChars[numChars];
 boolean newData = false;
 
+void recvWithStartEndMarkers();
 
 void drawStringWithSymbol( int x, int y, String s) {
 
